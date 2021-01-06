@@ -85,14 +85,28 @@ export class AppComponent implements OnInit {
 
   contextMenuPosition = { x: '0px', y: '0px' };
 
+  nodeObject: any[] = [
+    { id: 56, parentId: 62 },
+    { id: 81, parentId: 80 },
+    { id: 74, parentId: null },
+    { id: 76, parentId: 80 },
+    { id: 63, parentId: 62 },
+    { id: 80, parentId: 86 },
+    { id: 87, parentId: 86 },
+    { id: 62, parentId: 74 },
+    { id: 86, parentId: 74 },
+  ];
+
   constructor() {
     this.dataSource.data = TREE_DATA;
   }
 
   hasChild = (_: number, node: ExampleFlatNode) => node.expandable;
 
+  nodeTreeData: any = [];
 
   ngOnInit(): void {
+    this.nodeTreeData.push(this.buildTreeModel());
   }
 
   onContextMenuClick(event: MouseEvent, node: FoodNode) {
@@ -107,6 +121,29 @@ export class AppComponent implements OnInit {
   contextMenuActionClick(node: FoodNode, menu: Number) {
     console.log(node);
     console.log(menu);
+  }
+
+  
+  buildTreeModel(): [] {
+    const idMapping = this.nodeObject.reduce((acc, el, i) => {
+      acc[el.id] = i;
+      return acc;
+    }, {});
+
+    let root;
+    this.nodeObject.forEach(el => {
+    // Handle the root element
+      if (el.parentId === null) {
+        root = el;
+        return;
+      }
+      // Use our mapping to locate the parent element in our data array
+      const parentEl = this.nodeObject[idMapping[el.parentId]];
+      // Add our current el to its parent's `children` array
+      parentEl.showChildren = false;
+      parentEl.children = [...(parentEl.children || []), el];
+    });
+    return root;
   }
 
 }
