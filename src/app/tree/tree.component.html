@@ -1,7 +1,13 @@
 <ul *ngIf="nodeData" >
   <li *ngFor="let node of nodeData">
     <span *ngIf="node.children && node.children.length > 0"><b>></b></span>
-    <span (click)="toggleNode(node)">  {{node.id}}</span>
-    <app-tree *ngIf="node.showChildren"  [nodeData]="node.children"></app-tree>
+    <span (click)="toggleNode(node)" (contextmenu)="openContext($event, node)">  {{node.id}}</span>
+    <app-tree *ngIf="node.showChildren"  [nodeData]="node.children" [rootData]="rootData"></app-tree>
   </li>
 </ul>
+
+<div class="contextMenu" *ngIf="showMenu" [ngStyle]="{'left.px': xPosition, 'top.px': yPosition, 'position':'absolute'}" >
+  context menu
+  <hr />
+  <button (click)="updateData()">Update</button>
+</div>

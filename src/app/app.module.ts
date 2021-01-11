@@ -11,7 +11,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
 import { TreeComponent } from './tree/tree.component';
 
-
 @NgModule({
   entryComponents: [AppComponent],
   declarations: [

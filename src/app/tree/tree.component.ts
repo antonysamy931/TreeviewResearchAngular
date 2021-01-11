@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, HostListener } from '@angular/core';
 
 @Component({
   selector: 'app-tree',
@@ -8,6 +8,13 @@ import { Component, OnInit, Input } from '@angular/core';
 export class TreeComponent implements OnInit {
 
   @Input() nodeData: any;
+  @Input() rootData: any;
+
+  showMenu: boolean = false;
+  xPosition: number = 0;
+  yPosition: number = 0;
+  currentSelect: any;
+
   constructor() { }
 
   ngOnInit() {
@@ -16,5 +23,25 @@ export class TreeComponent implements OnInit {
 
   toggleNode(node: any) {
     node.showChildren = !node.showChildren;
+    this.showMenu = false;
+  }
+
+  openContext(event, node): void {
+    event.preventDefault();
+    this.xPosition = event.clientX + 10;
+    this.yPosition = event.clientY + 10;
+    this.showMenu = true;
+    this.currentSelect = node;
+  }
+
+  updateData(): void {
+    console.log(this.currentSelect);
+  }
+
+  @HostListener("document:click",["$event"])
+  onClick(event) {
+    if(this.showMenu) {
+      this.showMenu = !this.showMenu;
+    }
   }
 }

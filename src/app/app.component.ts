@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, HostListener } from '@angular/core';
 
 import { FlatTreeControl } from '@angular/cdk/tree';
 import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
@@ -85,6 +85,10 @@ export class AppComponent implements OnInit {
 
   contextMenuPosition = { x: '0px', y: '0px' };
 
+  showMenu: boolean = false;
+  xPosition: number = 0;
+  yPosition: number = 0;
+
   nodeObject: any[] = [
     { id: 56, parentId: 62 },
     { id: 81, parentId: 80 },
@@ -146,4 +150,18 @@ export class AppComponent implements OnInit {
     return root;
   }
 
+  openCustomMenu(event) {
+    console.log(event);
+    event.preventDefault();
+    this.xPosition = event.clientX + 10;
+    this.yPosition = event.clientY + 10;
+    this.showMenu = true;
+  }
+
+  // @HostListener("document:click",["$event"])
+  // onClick(event) {
+  //   if(this.showMenu) {
+  //     this.showMenu = !this.showMenu;
+  //   }
+  // }
 }
